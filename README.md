@@ -2,6 +2,23 @@
 
 基于 [yaque/selfktv](https://github.com/yaque/selfktv) 基线工程（AGP 9.3.3 / Kotlin / minSdk 30）开发的个人 K 歌 App，界面与交互模仿「全民K歌」。
 
+![](img/phone/1.jpg)
+![](img/phone/2.jpg)
+![](img/phone/3.jpg)
+![](img/phone/4.jpg)
+![](img/phone/5.jpg)
+![](img/phone/6.jpg)
+![](img/phone/7.jpg)
+![](img/phone/8.jpg)
+![](img/phone/9.jpg)
+
+![](img/web/1.png)
+![](img/web/2.png)
+![](img/web/3.png)
+![](img/web/4.png)
+![](img/web/5.png)
+![](img/web/6.png)
+
 ## 功能
 
 ### 🎵 歌房（歌曲列表）
