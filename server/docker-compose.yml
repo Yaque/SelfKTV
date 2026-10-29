@@ -1,0 +1,38 @@
+# SelfKTV 服务端 Docker Compose
+#
+#   轻量版：      docker compose up -d selfktv
+#   分离增强版：  docker compose up -d selfktv-ai
+#
+# 两个服务用同一 Dockerfile，通过 build.args 区分两套规则；请只启动其中一个。
+# 数据（数据库/歌曲/作品）持久化在 ./data。
+
+services:
+  # —— 规则一：轻量版（不带伴奏分离引擎） ——
+  selfktv:
+    build:
+      context: .
+      args:
+        WITH_AI: "false"
+    image: selfktv-server:latest
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped
+
+  # —— 规则二：分离增强版（demucs + 模型已内置，开箱即用） ——
+  selfktv-ai:
+    build:
+      context: .
+      args:
+        WITH_AI: "true"
+    image: selfktv-server-ai:latest
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/app/data
+      - torch-cache:/root/.cache/torch   # 模型缓存（重建容器不用重下）
+    restart: unless-stopped
+
+volumes:
+  torch-cache:

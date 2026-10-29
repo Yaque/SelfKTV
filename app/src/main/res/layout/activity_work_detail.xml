@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_gradient_dark"
+    android:keepScreenOn="true"
+    android:orientation="vertical">
+
+    <!-- 顶栏 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="16dp"
+        android:paddingTop="12dp">
+
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:contentDescription="返回"
+            android:src="@drawable/ic_back"
+            app:tint="@android:color/white" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvWorkTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="作品"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvSongTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="演唱歌曲"
+                android:textColor="#99FFFFFF"
+                android:textSize="11sp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvModeBadge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_chip_dark"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="4dp"
+            android:text="伴奏"
+            android:textColor="#3CE8A0"
+            android:textSize="11sp" />
+    </LinearLayout>
+
+    <!-- 歌词 -->
+    <com.aiocw.selfktv.ui.widget.LyricView
+        android:id="@+id/lyricView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingHorizontal="18dp"
+        android:layout_marginTop="8dp" />
+
+    <!-- 进度条 -->
+    <SeekBar
+        android:id="@+id/seekBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="18dp"
+        android:progressTint="#3CE8A0"
+        android:thumbTint="#3CE8A0" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingHorizontal="20dp">
+
+        <TextView
+            android:id="@+id/tvTimeCurrent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="00:00"
+            android:textColor="#B3FFFFFF"
+            android:textSize="11sp" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/tvTimeTotal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="00:00"
+            android:textColor="#B3FFFFFF"
+            android:textSize="11sp" />
+    </LinearLayout>
+
+    <!-- 混音开关 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingHorizontal="12dp"
+        android:paddingTop="10dp">
+
+        <TextView
+            android:id="@+id/btnToggleVoice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="4dp"
+            android:background="@drawable/bg_chip_toggle"
+            android:paddingHorizontal="14dp"
+            android:paddingVertical="7dp"
+            android:text="🎙 人声（作品）"
+            android:textColor="@color/chip_text"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/btnToggleAccomp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="4dp"
+            android:background="@drawable/bg_chip_toggle"
+            android:paddingHorizontal="14dp"
+            android:paddingVertical="7dp"
+            android:text="🎧 伴奏"
+            android:textColor="@color/chip_text"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+    <!-- 伴奏音量 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="28dp"
+        android:paddingTop="8dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="伴奏音量"
+            android:textColor="#B3FFFFFF"
+            android:textSize="11sp" />
+
+        <SeekBar
+            android:id="@+id/sbAccomp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1"
+            android:max="100"
+            android:progress="85"
+            android:progressTint="#3CE8A0"
+            android:thumbTint="#3CE8A0" />
+    </LinearLayout>
+
+    <!-- 控制 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="28dp"
+        android:paddingTop="12dp">
+
+        <ImageView
+            android:id="@+id/btnPlayPause"
+            android:layout_width="58dp"
+            android:layout_height="58dp"
+            android:contentDescription="播放/暂停"
+            android:src="@drawable/ic_play"
+            app:tint="@android:color/white" />
+
+        <Button
+            android:id="@+id/btnExport"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="18dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_button_green"
+            android:text="⬇ 混合导出（人声+伴奏）"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvStatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingHorizontal="28dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="18dp"
+        android:text="就绪"
+        android:textColor="#99FFFFFF"
+        android:textSize="10sp" />
+</LinearLayout>

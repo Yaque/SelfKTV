@@ -1,0 +1,25 @@
+# SelfKTV 服务端 systemd 单元（真机常驻运行）
+#
+# 安装：
+#   sudo cp selfktv.service /etc/systemd/system/
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable --now selfktv
+#
+# 注意：请按实际部署路径修改 WorkingDirectory / ExecStart / SELFKTV_DATA，
+#       以及运行用户 User=（建议非 root）。
+
+[Unit]
+Description=SelfKTV Karaoke Server
+After=network.target
+
+[Service]
+Type=simple
+User=selfktv
+WorkingDirectory=/opt/selfktv/server
+ExecStart=/opt/selfktv/server/.venv/bin/python /opt/selfktv/server/run.py --host 0.0.0.0 --port 8000
+Environment=SELFKTV_DATA=/opt/selfktv/server/data
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target

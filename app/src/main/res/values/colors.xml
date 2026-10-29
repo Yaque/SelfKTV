@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <!-- 品牌色 -->
+    <color name="brand_green">#FF16C47F</color>
+    <color name="brand_green_dark">#FF0EA86B</color>
+
+    <!-- 界面 -->
+    <color name="bg_light">#FFF4F6F8</color>
+    <color name="text_dark">#FF1F2430</color>
+    <color name="text_muted">#FF8A93A3</color>
+
+    <!-- 语义色（白天/黑夜各有一套，见 values-night） -->
+    <color name="card_bg">#FFFFFFFF</color>
+    <color name="edit_bg">#FFFFFFFF</color>
+    <color name="border">#FFE5E9F0</color>
+    <color name="chip_bg">#FFE3F7EE</color>
+    <color name="placeholder_bg">#FFE8EDF2</color>
+    <color name="nav_bg">#FFFFFFFF</color>
+</resources>

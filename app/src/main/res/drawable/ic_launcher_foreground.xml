@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- SelfKTV 启动器前景：白色麦克风（品牌图标） -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M54,30c-4.4,0 -8,3.6 -8,8v12c0,4.4 3.6,8 8,8s8,-3.6 8,-8V38c0,-4.4 -3.6,-8 -8,-8z" />
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="4.6"
+        android:strokeLineCap="round"
+        android:pathData="M41,48v2.5a13,13 0 0 0 26,0V48" />
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="4.6"
+        android:strokeLineCap="round"
+        android:pathData="M54,63.5v10" />
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="4.6"
+        android:strokeLineCap="round"
+        android:pathData="M45,73.5h18" />
+</vector>

@@ -1,0 +1,45 @@
+<resources>
+    <string name="app_name">SelfKTV</string>
+
+    <!-- 听歌 · 歌曲详情页 -->
+    <string name="listen_detail_back_desc">返回</string>
+    <string name="listen_detail_cover_desc">封面</string>
+    <string name="listen_detail_default_title">歌曲详情</string>
+    <string name="listen_unknown_artist">未知歌手</string>
+    <string name="listen_fav">收藏</string>
+    <string name="listen_lyric_placeholder">暂无歌词</string>
+    <string name="listen_lyric_loading">歌词加载中…</string>
+
+    <!-- 音轨选择 -->
+    <string name="listen_track_label">音轨</string>
+    <string name="listen_track_original">原曲</string>
+    <string name="listen_track_vocal">人声</string>
+    <string name="listen_track_accomp">伴奏</string>
+
+    <!-- 播放模式 -->
+    <string name="listen_mode_list_loop">🔁 列表循环</string>
+    <string name="listen_mode_shuffle">🔀 随机</string>
+    <string name="listen_mode_single_loop">🔂 单曲循环</string>
+
+    <!-- 歌单管理 -->
+    <string name="listen_playlist_join">📁 加入歌单</string>
+    <string name="listen_playlist_leave">📁 移出歌单</string>
+    <string name="listen_playlist_new">＋ 新建歌单并加入</string>
+    <string name="listen_playlist_manage_title">「%1$s」歌单管理</string>
+    <string name="listen_playlist_new_title">新建歌单并加入</string>
+    <string name="listen_playlist_name_hint">歌单名称</string>
+    <string name="listen_playlist_item">「%1$s」已加入</string>
+
+    <!-- 通用对话框 -->
+    <string name="listen_ok">确定</string>
+    <string name="listen_cancel">取消</string>
+    <string name="listen_done">完成</string>
+    <string name="listen_name_empty">名称不能为空</string>
+
+    <!-- 播放控件 -->
+    <string name="listen_ctrl_prev">⏮</string>
+    <string name="listen_ctrl_play">▶</string>
+    <string name="listen_ctrl_pause">⏸</string>
+    <string name="listen_ctrl_next">⏭</string>
+    <string name="listen_time_zero">00:00</string>
+</resources>

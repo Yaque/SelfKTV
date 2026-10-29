@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_gradient_login"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="32dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="64dp"
+            android:text="🎤"
+            android:textSize="56sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="SelfKTV"
+            android:textColor="@android:color/white"
+            android:textSize="28sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="属于自己的 K 歌房"
+            android:textColor="#B3FFFFFF"
+            android:textSize="14sp" />
+
+        <EditText
+            android:id="@+id/etServer"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginTop="44dp"
+            android:background="@drawable/bg_edittext"
+            android:hint="服务器地址 例如 http://192.168.1.100:8000"
+            android:inputType="textUri"
+            android:paddingHorizontal="16dp"
+            android:textColor="@color/text_dark"
+            android:textColorHint="#8A93A3"
+            android:textSize="14sp" />
+
+        <EditText
+            android:id="@+id/etUser"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginTop="14dp"
+            android:background="@drawable/bg_edittext"
+            android:hint="账号"
+            android:inputType="text"
+            android:paddingHorizontal="16dp"
+            android:textColor="@color/text_dark"
+            android:textColorHint="#8A93A3"
+            android:textSize="14sp" />
+
+        <EditText
+            android:id="@+id/etPassword"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginTop="14dp"
+            android:background="@drawable/bg_edittext"
+            android:hint="密码"
+            android:inputType="textPassword"
+            android:paddingHorizontal="16dp"
+            android:textColor="@color/text_dark"
+            android:textColorHint="#8A93A3"
+            android:textSize="14sp" />
+
+        <Button
+            android:id="@+id/btnLogin"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginTop="28dp"
+            android:background="@drawable/bg_button_green"
+            android:text="登 录"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvHint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:text="首次使用请先在网页管理页面初始化账号"
+            android:textColor="#B3FFFFFF"
+            android:textSize="12sp" />
+    </LinearLayout>
+</ScrollView>

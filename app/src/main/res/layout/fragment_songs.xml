@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_light"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="20dp"
+        android:paddingTop="22dp"
+        android:paddingBottom="10dp"
+        android:text="歌房"
+        android:textColor="@color/text_dark"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="16dp"
+        android:paddingBottom="10dp">
+
+        <EditText
+            android:id="@+id/etSearch"
+            android:layout_width="0dp"
+            android:layout_height="46dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_edittext"
+            android:hint="🔍 搜索歌名 / 歌手"
+            android:inputType="text"
+            android:paddingHorizontal="16dp"
+            android:textColor="@color/text_dark"
+            android:textColorHint="#8A93A3"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/btnRefresh"
+            android:layout_width="wrap_content"
+            android:layout_height="46dp"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/bg_button_outline"
+            android:gravity="center"
+            android:paddingHorizontal="16dp"
+            android:text="⟳ 刷新"
+            android:textColor="@color/brand_green"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:paddingHorizontal="12dp"
+                android:paddingBottom="16dp" />
+
+            <TextView
+                android:id="@+id/tvEmpty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="服务端还没有歌曲\n请在管理页面上传"
+                android:textColor="@color/text_muted"
+                android:textSize="14sp"
+                android:visibility="gone" />
+
+            <ProgressBar
+                android:id="@+id/progress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
+        </FrameLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+</LinearLayout>

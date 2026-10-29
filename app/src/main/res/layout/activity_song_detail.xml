@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_light">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="22dp">
+
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:contentDescription="返回"
+            android:src="@drawable/ic_back"
+            app:tint="@color/text_dark" />
+
+        <ImageView
+            android:id="@+id/ivCover"
+            android:layout_width="170dp"
+            android:layout_height="170dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="14dp"
+            android:contentDescription="封面"
+            android:scaleType="centerCrop"
+            android:src="@drawable/bg_cover_placeholder" />
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="18dp"
+            android:text="歌曲名"
+            android:textColor="@color/text_dark"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvArtist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="6dp"
+            android:text="歌手"
+            android:textColor="@color/text_muted"
+            android:textSize="14sp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="6dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tvDuration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="00:00"
+                android:textColor="@color/text_muted"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/tvScoreTag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:background="@drawable/bg_chip"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="3dp"
+                android:text="🎯 可打分"
+                android:textColor="@color/brand_green_dark"
+                android:textSize="11sp"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="26dp"
+            android:layout_marginBottom="10dp"
+            android:text="选择演唱模式（演唱中可随时切换）"
+            android:textColor="@color/text_dark"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <!-- 第一行：原唱 / 人声 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/cardMix"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="6dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_mode_card"
+                android:orientation="vertical"
+                android:padding="14dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="🎤 原唱"
+                    android:textColor="@color/text_dark"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="人声 + 伴奏\n完整效果跟唱"
+                    android:textColor="@color/text_muted"
+                    android:textSize="11sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/cardVocal"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_mode_card"
+                android:orientation="vertical"
+                android:padding="14dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="🎙 人声"
+                    android:textColor="@color/text_dark"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="只有人声\n听清唱细节"
+                    android:textColor="@color/text_muted"
+                    android:textSize="11sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- 第二行：伴奏 / 智能 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/cardAccomp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="6dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_mode_card"
+                android:orientation="vertical"
+                android:padding="14dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="🎧 伴奏"
+                    android:textColor="@color/text_dark"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="纯伴奏演唱\n你就是主角"
+                    android:textColor="@color/text_muted"
+                    android:textSize="11sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/cardSmart"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_mode_card"
+                android:orientation="vertical"
+                android:padding="14dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="✨ 智能"
+                    android:textColor="@color/text_dark"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="开口唱自动消原唱\n停唱原唱接上"
+                    android:textColor="@color/text_muted"
+                    android:textSize="11sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvModeDesc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:background="@drawable/bg_card"
+            android:padding="14dp"
+            android:text="🎤 原唱模式：人声 + 伴奏完整效果"
+            android:textColor="@color/brand_green_dark"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/tvStatusHint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:paddingHorizontal="4dp"
+            android:text=""
+            android:textColor="@color/text_muted"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/btnSing"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginTop="22dp"
+            android:background="@drawable/bg_button_green"
+            android:text="🎤 开始演唱（录音 · 打分）"
+            android:textColor="@android:color/white"
+            android:textSize="17sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btnPractice"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/bg_button_outline"
+            android:text="📖 练唱（逐句跟唱 · 块状音准）"
+            android:textColor="@color/brand_green"
+            android:textSize="15sp" />
+    </LinearLayout>
+</ScrollView>

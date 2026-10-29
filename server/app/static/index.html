@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SelfKTV 管理后台</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="icon" type="image/png" sizes="512x512" href="favicon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+  <script>
+    /* 主题预置（防闪白）：auto / light / dark */
+    (function () {
+      var t = "auto";
+      try { t = localStorage.getItem("selfktv_theme") || "auto"; } catch (e) {}
+      var dark = t === "dark" || (t === "auto" && window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches);
+      document.documentElement.setAttribute("data-theme", dark ? "dark" : "light");
+    })();
+  </script>
+  <link rel="stylesheet" href="admin.css?v=20261021c">
+</head>
+<body>
+
+<!-- ============ 账号初始化 ============ -->
+<section id="view-init" class="auth-wrap hidden">
+  <div class="auth-card">
+    <div class="auth-logo">🎤</div>
+    <h1>SelfKTV 账号初始化</h1>
+    <p class="muted">首次部署，请创建你的个人账号（同时用于 App 登录与管理后台）。</p>
+    <form id="form-init">
+      <label>用户名
+        <input type="text" name="username" autocomplete="username" required maxlength="64" placeholder="例如：admin">
+      </label>
+      <label>密码
+        <input type="password" name="password" autocomplete="new-password" required minlength="6" placeholder="至少 6 位">
+      </label>
+      <label>确认密码
+        <input type="password" name="password2" autocomplete="new-password" required minlength="6" placeholder="再输入一次">
+      </label>
+      <button type="submit" class="btn primary block">创建账号并进入系统</button>
+    </form>
+  </div>
+</section>
+
+<!-- ============ 登录 ============ -->
+<section id="view-login" class="auth-wrap hidden">
+  <div class="auth-card">
+    <div class="auth-logo">🎤</div>
+    <h1>SelfKTV 管理后台</h1>
+    <p class="muted">请使用初始化时创建的账号登录</p>
+    <form id="form-login">
+      <label>用户名
+        <input type="text" name="username" autocomplete="username" required>
+      </label>
+      <label>密码
+        <input type="password" name="password" autocomplete="current-password" required>
+      </label>
+      <button type="submit" class="btn primary block">登 录</button>
+    </form>
+  </div>
+</section>
+
+<!-- ============ 主界面 ============ -->
+<div id="view-app" class="app hidden">
+  <aside class="sidebar">
+    <div class="brand">🎤 SelfKTV</div>
+    <nav>
+      <button class="nav-item active" data-tab="songs">🎵 歌曲管理</button>
+      <button class="nav-item" data-tab="works">🎧 作品管理</button>
+      <button class="nav-item" data-tab="listen">🎵 听歌</button>
+      <button class="nav-item" data-tab="account">👤 账号设置</button>
+    </nav>
+    <div class="sidebar-foot">
+      <div class="muted" id="whoami">-</div>
+      <div class="sidebar-foot-btns">
+        <button class="btn ghost small" id="btn-theme" title="切换主题：自动 / 白天 / 黑夜">🖥️ 自动</button>
+        <button class="btn ghost small" id="btn-logout">退出登录</button>
+      </div>
+    </div>
+  </aside>
+
+  <main class="content">
+
+    <!-- ---------- 歌曲 ---------- -->
+    <section id="tab-songs" class="tab active">
+      <header class="tab-head">
+        <h2>歌曲管理</h2>
+        <div class="row">
+          <input id="song-search" class="search" type="search" placeholder="搜索歌名 / 歌手…">
+          <button class="btn ghost" id="btn-refresh-songs">⟳ 刷新</button>
+          <button class="btn primary" id="btn-show-upload">＋ 上传歌曲</button>
+        </div>
+      </header>
+
+      <!-- 搜歌导入（GD音乐台） -->
+      <div id="music-panel" class="card">
+        <h3>🎵 搜歌导入 <span class="muted" style="font-size:12px;font-weight:normal">搜索 → 勾选 → 导入：自动下载歌曲/歌词/封面，刷新歌单后自动分离、转录</span></h3>
+        <div class="row">
+          <input id="music-keyword" class="search" type="search" placeholder="歌名 / 歌手 / 专辑关键字" style="flex:1">
+          <select id="music-source">
+            <option value="netease">网易云</option>
+            <option value="joox">JOOX</option>
+            <option value="bilibili">B站</option>
+          </select>
+          <select id="music-br">
+            <option value="320" selected>320kbps</option>
+            <option value="128">128kbps</option>
+            <option value="740">无损 FLAC</option>
+            <option value="999">Hi-Res</option>
+          </select>
+          <button class="btn primary" id="btn-music-search">搜索</button>
+        </div>
+        <div id="music-status" class="music-status"></div>
+        <div id="music-results"></div>
+        <div id="music-toolbar" class="row hidden" style="margin-top:10px;align-items:center">
+          <label class="muted" style="display:flex;align-items:center;gap:6px;cursor:pointer">
+            <input type="checkbox" id="music-check-all"> 全选
+          </label>
+          <button class="btn primary" id="btn-music-import">📥 导入选中</button>
+          <span class="muted" id="music-picked-count"></span>
+        </div>
+        <div id="music-imports" class="music-imports muted"></div>
+        <p class="muted" style="margin-top:10px;font-size:12px">
+          数据来源：<a href="https://music.gdstudio.xyz" target="_blank" rel="noreferrer">GD音乐台</a>（music.gdstudio.xyz）
+          · 仅供个人学习使用，请勿商用 · 站方频率限制：5 分钟内不超过 50 次请求
+        </p>
+      </div>
+
+      <!-- 分离组件准备进度 -->
+      <div id="setup-panel" class="card setup-card hidden">
+        <h3>🔧 准备伴奏分离组件</h3>
+        <p class="muted">首次使用需要安装分离引擎（demucs）并下载模型（约 80MB），完成后即可自动分离人声/伴奏。</p>
+        <div class="progress"><div class="bar" id="setup-bar"></div></div>
+        <div class="setup-status"><span id="setup-text">等待开始…</span><b id="setup-percent">0%</b></div>
+        <details id="setup-log-wrap"><summary class="muted">查看安装日志</summary><pre id="setup-log"></pre></details>
+        <div class="form-actions">
+          <button class="btn primary" id="btn-setup-install">立即安装</button>
+        </div>
+      </div>
+
+      <div id="upload-panel" class="card hidden">
+        <h3>上传歌曲</h3>
+
+        <div class="seg" id="upload-mode">
+          <button type="button" class="seg-btn active" data-kind="auto">🤖 智能分离（上传原曲）</button>
+          <button type="button" class="seg-btn" data-kind="manual">✍️ 手动上传单个文件</button>
+        </div>
+
+        <form id="form-upload" class="grid-form">
+          <input type="hidden" name="kind" id="upload-kind" value="auto">
+          <label>歌曲名 *<input name="title" id="upload-title" required maxlength="128" placeholder="选择音频后自动读取，可修改"></label>
+          <label>歌手<input name="artist" id="upload-artist" maxlength="128" placeholder="选择音频后自动读取，可修改"></label>
+          <input type="hidden" name="duration" id="upload-duration" value="0">
+
+          <label class="wide" id="wrap-main-file">原曲音频（自动提取歌词 + 分离人声/伴奏）
+            <input type="file" name="audio" id="upload-audio" accept="audio/*"></label>
+
+          <label id="wrap-kind" class="hidden">该文件是
+            <select name="kind_manual" id="upload-kind-select">
+              <option value="vocal">人声（无伴奏的演唱声）</option>
+              <option value="accomp">伴奏（无人声的伴奏）</option>
+              <option value="original">原唱混合（人声+伴奏一体）</option>
+            </select>
+          </label>
+
+          <label>LRC 歌词（可选，默认读音频内嵌歌词）<input type="file" name="lyric" accept=".lrc,.txt"></label>
+          <label>封面图（可选）
+            <input type="file" name="cover" id="upload-cover" accept="image/*">
+            <img id="upload-cover-preview" class="cover-preview hidden" alt="封面预览">
+          </label>
+          <div class="form-actions">
+            <button type="submit" class="btn primary">开始上传</button>
+            <button type="button" class="btn ghost" id="btn-cancel-upload">取消</button>
+          </div>
+        </form>
+        <div class="progress hidden" id="upload-progress"><div class="bar" id="upload-bar"></div></div>
+        <p class="muted" id="probe-hint"></p>
+      </div>
+
+      <div class="card table-card">
+        <table class="table" id="song-table">
+          <thead>
+            <tr><th>封面</th><th>歌曲</th><th>时长</th><th>可用模式</th><th>分离状态</th><th>转录状态</th><th>更新时间</th><th>操作</th></tr>
+          </thead>
+          <tbody id="song-tbody"></tbody>
+        </table>
+        <div class="empty muted" id="song-empty">还没有歌曲，点击右上角「上传歌曲」开始。</div>
+      </div>
+    </section>
+
+    <!-- ---------- 作品 ---------- -->
+    <section id="tab-works" class="tab">
+      <header class="tab-head"><h2>作品管理</h2>
+        <button class="btn ghost" id="btn-refresh-works">⟳ 刷新</button>
+      </header>
+      <div class="card table-card">
+        <table class="table" id="work-table">
+          <thead>
+            <tr><th>作品</th><th>演唱歌曲</th><th>模式</th><th>演唱者</th><th>时长</th><th>时间</th><th>试听</th><th>操作</th></tr>
+          </thead>
+          <tbody id="work-tbody"></tbody>
+        </table>
+        <div class="empty muted" id="work-empty">还没有作品。在 App 里唱一首试试。</div>
+      </div>
+    </section>
+
+    <!-- ---------- 听歌 ---------- -->
+    <section id="tab-listen" class="tab">
+      <header class="tab-head"><h2>🎵 听歌</h2></header>
+
+      <!-- 常驻播放器条 -->
+      <div class="player-bar card" id="lp-bar">
+        <div class="lp-cover" id="lp-cover">🎵</div>
+        <div class="lp-meta">
+          <div class="lp-title" id="lp-title">未在播放</div>
+          <div class="lp-artist muted" id="lp-artist">从下方选一首歌开始</div>
+        </div>
+        <div class="lp-controls">
+          <button type="button" class="btn ghost small" id="lp-prev" title="上一首">⏮</button>
+          <button type="button" class="btn primary small" id="lp-play" title="播放 / 暂停">▶</button>
+          <button type="button" class="btn ghost small" id="lp-next" title="下一首">⏭</button>
+        </div>
+        <div class="lp-progress">
+          <span class="lp-time" id="lp-cur">00:00</span>
+          <input type="range" id="lp-seek" min="0" max="1000" step="1" value="0">
+          <span class="lp-time" id="lp-dur">00:00</span>
+        </div>
+        <button type="button" class="btn ghost small lp-fav" id="lp-fav" title="收藏 / 取消收藏">🤍</button>
+        <audio id="lp-audio" preload="metadata"></audio>
+      </div>
+
+      <!-- 歌曲详情页（#tab-listen 内全屏子视图，遮盖列表区；播放器条保持可见可操作） -->
+      <div class="lsc-detail hidden" id="lsc-detail">
+        <div class="lsc-detail-head">
+          <button type="button" class="btn ghost" id="lsc-d-back">← 返回</button>
+          <div class="lsc-d-heading">
+            <div class="lsc-d-title" id="lsc-d-title">-</div>
+            <div class="lsc-d-artist muted" id="lsc-d-artist">-</div>
+          </div>
+        </div>
+        <div class="lsc-detail-body">
+          <div class="lsc-d-left">
+            <div class="lsc-d-cover" id="lsc-d-cover">🎵</div>
+            <div class="lsc-d-track" id="lsc-d-track-wrap">
+              <div class="muted">音轨选择</div>
+              <div class="seg small" id="lsc-d-track-seg"></div>
+            </div>
+            <div class="lsc-d-row">
+              <button type="button" class="btn ghost" id="lsc-d-prev" title="上一首">⏮ 上一首</button>
+              <button type="button" class="btn primary" id="lsc-d-play" title="播放 / 暂停">▶</button>
+              <button type="button" class="btn ghost" id="lsc-d-next" title="下一首">⏭ 下一首</button>
+            </div>
+            <div class="lsc-d-progress">
+              <span class="lp-time" id="lsc-d-cur">00:00</span>
+              <input type="range" id="lsc-d-seek" min="0" max="1000" step="1" value="0">
+              <span class="lp-time" id="lsc-d-dur">00:00</span>
+            </div>
+            <div class="lsc-d-row">
+              <button type="button" class="btn ghost" id="lsc-d-mode" title="播放模式（点击切换）">🔁 列表循环</button>
+              <button type="button" class="btn ghost" id="lsc-d-fav" title="收藏 / 取消收藏">🤍</button>
+              <button type="button" class="btn ghost" id="lsc-d-pl" title="加入 / 移出歌单">➕ 加入歌单 / 移出歌单</button>
+            </div>
+          </div>
+          <div class="lsc-d-right">
+            <h3>歌词</h3>
+            <div class="lsc-lyrics" id="lsc-d-lyrics"><div class="empty muted">暂无歌词</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 四个分区 -->
+      <div class="seg" id="lsc-seg">
+        <button type="button" class="seg-btn active" data-kind="queue">📃 播放队列</button>
+        <button type="button" class="seg-btn" data-kind="fav">❤ 收藏</button>
+        <button type="button" class="seg-btn" data-kind="playlists">📁 歌单</button>
+        <button type="button" class="seg-btn" data-kind="library">🎵 全部歌曲</button>
+      </div>
+
+      <!-- 播放队列 -->
+      <div class="card lsc-panel" id="lsc-panel-queue">
+        <div class="lsc-head">
+          <h3>播放队列 <span class="muted" id="lsc-queue-count"></span></h3>
+          <button type="button" class="btn ghost small" id="lsc-queue-clear">🗑 清空队列</button>
+        </div>
+        <div class="lsc-list" id="lsc-queue-list"></div>
+        <div class="empty muted hidden" id="lsc-queue-empty">队列为空，去「全部歌曲」添加几首吧。</div>
+      </div>
+
+      <!-- 收藏 -->
+      <div class="card lsc-panel hidden" id="lsc-panel-fav">
+        <div class="lsc-head">
+          <h3>我的收藏 <span class="muted" id="lsc-fav-count"></span></h3>
+          <button type="button" class="btn primary small" id="lsc-fav-playall">▶ 播放全部</button>
+        </div>
+        <div class="lsc-list" id="lsc-fav-list"></div>
+        <div class="empty muted hidden" id="lsc-fav-empty">还没有收藏，点歌曲行的 ❤ 收藏。</div>
+      </div>
+
+      <!-- 歌单 -->
+      <div class="card lsc-panel hidden" id="lsc-panel-playlists">
+        <div id="lsc-pl-main">
+          <div class="lsc-head">
+            <h3>我的歌单 <span class="muted" id="lsc-pl-count"></span></h3>
+            <button type="button" class="btn primary small" id="lsc-pl-new">＋ 新建歌单</button>
+          </div>
+          <div class="lsc-list" id="lsc-pl-list"></div>
+          <div class="empty muted hidden" id="lsc-pl-empty">还没有歌单，点右上角「新建歌单」创建。</div>
+        </div>
+        <div id="lsc-pl-detail" class="hidden">
+          <div class="lsc-head">
+            <button type="button" class="btn ghost small" id="lsc-pl-back">← 返回</button>
+            <h3 id="lsc-pl-detail-name">歌单</h3>
+            <button type="button" class="btn primary small" id="lsc-pl-playall">▶ 播放全部</button>
+          </div>
+          <div class="lsc-list" id="lsc-pl-detail-list"></div>
+          <div class="empty muted hidden" id="lsc-pl-detail-empty">歌单里还没有歌曲，去「全部歌曲」添加吧。</div>
+        </div>
+      </div>
+
+      <!-- 全部歌曲 -->
+      <div class="card lsc-panel hidden" id="lsc-panel-library">
+        <div class="lsc-head">
+          <h3>全部歌曲 <span class="muted" id="lsc-lib-count"></span></h3>
+          <input id="lsc-search" class="search" type="search" placeholder="搜索歌名 / 歌手…">
+        </div>
+        <div class="lsc-list" id="lsc-lib-list"></div>
+        <div class="empty muted hidden" id="lsc-lib-empty">没有匹配的歌曲。</div>
+      </div>
+    </section>
+
+    <!-- ---------- 账号 ---------- -->
+    <section id="tab-account" class="tab">
+      <header class="tab-head"><h2>账号设置</h2></header>
+      <div class="card narrow">
+        <h3>修改密码</h3>
+        <form id="form-password" class="grid-form">
+          <label>原密码<input type="password" name="old_password" required></label>
+          <label>新密码<input type="password" name="new_password" required minlength="6" placeholder="至少 6 位"></label>
+          <div class="form-actions"><button type="submit" class="btn primary">保存</button></div>
+        </form>
+      </div>
+      <div class="card narrow">
+        <h3>App 连接信息</h3>
+        <p class="muted">在 Android App 中填写下面的服务器地址，并使用相同账号登录：</p>
+        <code id="server-url">-</code>
+      </div>
+    </section>
+  </main>
+</div>
+
+<!-- 编辑歌曲弹窗 -->
+<div class="modal hidden" id="modal-edit">
+  <div class="modal-box">
+    <h3>编辑歌曲</h3>
+    <div class="file-status" id="edit-file-status"></div>
+    <form id="form-edit" class="grid-form">
+      <input type="hidden" name="id">
+      <input type="hidden" name="kind" id="edit-kind" value="auto">
+      <label>歌曲名<input name="title" id="edit-title" required maxlength="128"></label>
+      <label>歌手<input name="artist" id="edit-artist" maxlength="128"></label>
+
+      <div class="wide seg small" id="edit-mode">
+        <button type="button" class="seg-btn active" data-kind="auto">替换原曲（重新自动分离）</button>
+        <button type="button" class="seg-btn" data-kind="manual">替换单个文件</button>
+      </div>
+
+      <label class="wide" id="edit-wrap-main">新的原曲音频（留空不换）
+        <input type="file" name="audio" id="edit-audio" accept="audio/*"></label>
+      <label id="edit-wrap-kind" class="hidden">替换的是
+        <select name="kind_manual" id="edit-kind-select">
+          <option value="vocal">人声</option>
+          <option value="accomp">伴奏</option>
+          <option value="original">原唱混合</option>
+        </select>
+      </label>
+
+      <label>LRC 歌词（留空不换）<input type="file" name="lyric" accept=".lrc,.txt"></label>
+      <label>封面图（留空不换）
+        <input type="file" name="cover" id="edit-cover" accept="image/*">
+        <img id="edit-cover-preview" class="cover-preview hidden" alt="封面预览">
+      </label>
+      <div class="form-actions">
+        <button type="submit" class="btn primary">保存</button>
+        <button type="button" class="btn ghost" id="btn-reseparate" hidden>重新分离伴奏</button>
+        <button type="button" class="btn ghost" id="btn-cancel-edit">取消</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- 听歌：歌单命名弹窗（新建 / 重命名） -->
+<div class="modal hidden" id="modal-pl-name">
+  <div class="modal-box" style="width:400px">
+    <h3 id="pl-name-title">新建歌单</h3>
+    <form id="form-pl-name" class="grid-form">
+      <input type="hidden" id="pl-name-id" value="">
+      <label class="wide">歌单名称
+        <input type="text" id="pl-name-input" required maxlength="64" placeholder="例如：周末欢唱">
+      </label>
+      <div class="form-actions">
+        <button type="submit" class="btn primary">保存</button>
+        <button type="button" class="btn ghost" id="pl-name-cancel">取消</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- 听歌：加入歌单选择弹窗 -->
+<div class="modal hidden" id="modal-pl-pick">
+  <div class="modal-box" style="width:420px">
+    <h3>➕ 加入 / 移出歌单</h3>
+    <div class="lsc-list" id="lsc-pick-list"></div>
+    <div class="empty muted hidden" id="lsc-pick-empty">还没有歌单，先新建一个吧。</div>
+    <div class="form-actions" style="margin-top:14px">
+      <button type="button" class="btn primary" id="lsc-pick-new">＋ 新建歌单并加入</button>
+      <button type="button" class="btn ghost" id="lsc-pick-close">关闭</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="toast hidden"></div>
+
+<script src="admin.js?v=20261023a"></script>
+<script src="listen.js?v=20261023b"></script>
+</body>
+</html>

@@ -1,0 +1,409 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_gradient_dark"
+    android:keepScreenOn="true"
+    android:orientation="vertical">
+
+    <!-- 顶栏：返回 / 小封面图 / 歌曲信息 / 得分 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="16dp"
+        android:paddingTop="12dp">
+
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:contentDescription="返回"
+            android:src="@drawable/ic_back"
+            app:tint="@android:color/white" />
+
+        <ImageView
+            android:id="@+id/ivCoverThumb"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:layout_marginStart="10dp"
+            android:contentDescription="封面"
+            android:scaleType="centerCrop"
+            android:src="@drawable/bg_cover_placeholder"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvSongTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="歌曲名"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvSongArtist"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="歌手"
+                android:textColor="#99FFFFFF"
+                android:textSize="11sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvScore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textColor="#3CE8A0"
+                android:textSize="30sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="音准得分"
+                android:textColor="#99FFFFFF"
+                android:textSize="10sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- 模式切换（可随时切换） -->
+    <LinearLayout
+        android:id="@+id/modeRow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingHorizontal="12dp"
+        android:paddingTop="10dp">
+
+        <TextView
+            android:id="@+id/chipMix"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="4dp"
+            android:background="@drawable/bg_chip_toggle"
+            android:paddingHorizontal="14dp"
+            android:paddingVertical="7dp"
+            android:text="🎤 原唱"
+            android:textColor="@color/chip_text"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/chipVocal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="4dp"
+            android:background="@drawable/bg_chip_toggle"
+            android:paddingHorizontal="14dp"
+            android:paddingVertical="7dp"
+            android:text="🎙 人声"
+            android:textColor="@color/chip_text"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/chipAccomp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="4dp"
+            android:background="@drawable/bg_chip_toggle"
+            android:paddingHorizontal="14dp"
+            android:paddingVertical="7dp"
+            android:text="🎧 伴奏"
+            android:textColor="@color/chip_text"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/chipSmart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="4dp"
+            android:background="@drawable/bg_chip_toggle"
+            android:paddingHorizontal="14dp"
+            android:paddingVertical="7dp"
+            android:text="✨ 智能"
+            android:textColor="@color/chip_text"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+    <!-- 歌词（放大展示区） -->
+    <com.aiocw.selfktv.ui.widget.LyricView
+        android:id="@+id/lyricView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingHorizontal="18dp" />
+
+    <!-- 音准器 + 声音展示条（同宽并排） -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="20dp">
+
+        <com.aiocw.selfktv.ui.widget.PitchRollView
+            android:id="@+id/pitchRoll"
+            android:layout_width="match_parent"
+            android:layout_height="96dp" />
+
+        <ProgressBar
+            android:id="@+id/pbMic"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="8dp"
+            android:layout_marginTop="6dp"
+            android:max="100"
+            android:progressTint="#3CE8A0"
+            android:progressBackgroundTint="#223CE8A0" />
+    </LinearLayout>
+
+    <!-- 进度 -->
+    <SeekBar
+        android:id="@+id/seekBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="18dp"
+        android:layout_marginTop="8dp"
+        android:progressTint="#3CE8A0"
+        android:thumbTint="#3CE8A0" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingHorizontal="20dp">
+
+        <TextView
+            android:id="@+id/tvTimeCurrent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="00:00"
+            android:textColor="#B3FFFFFF"
+            android:textSize="11sp" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/tvTimeTotal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="00:00"
+            android:textColor="#B3FFFFFF"
+            android:textSize="11sp" />
+    </LinearLayout>
+
+    <!-- 开关行：人声 / 伴奏 / 录音 / 耳返（可随时开关） -->
+    <LinearLayout
+        android:id="@+id/toggleRow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingHorizontal="12dp"
+        android:paddingTop="10dp">
+
+        <TextView
+            android:id="@+id/btnToggleVocal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="4dp"
+            android:background="@drawable/bg_chip_toggle"
+            android:paddingHorizontal="13dp"
+            android:paddingVertical="7dp"
+            android:text="🎙 人声"
+            android:textColor="@color/chip_text"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/btnToggleAccomp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="4dp"
+            android:background="@drawable/bg_chip_toggle"
+            android:paddingHorizontal="13dp"
+            android:paddingVertical="7dp"
+            android:text="🎧 伴奏"
+            android:textColor="@color/chip_text"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/btnToggleRecord"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="4dp"
+            android:background="@drawable/bg_chip_toggle"
+            android:paddingHorizontal="13dp"
+            android:paddingVertical="7dp"
+            android:text="⏺ 录音"
+            android:textColor="@color/chip_text"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/btnEarback"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="4dp"
+            android:background="@drawable/bg_chip_toggle"
+            android:paddingHorizontal="13dp"
+            android:paddingVertical="7dp"
+            android:text="🎧 耳返"
+            android:textColor="@color/chip_text"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+    <!-- 人声音量 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="28dp"
+        android:paddingTop="8dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="人声音量"
+            android:textColor="#B3FFFFFF"
+            android:textSize="11sp" />
+
+        <SeekBar
+            android:id="@+id/sbVocalVolume"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1"
+            android:max="100"
+            android:progressTint="#3CE8A0"
+            android:thumbTint="#3CE8A0" />
+    </LinearLayout>
+
+    <!-- 播放速度（0.05x 步进） -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="28dp"
+        android:paddingTop="8dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="播放速度"
+            android:textColor="#B3FFFFFF"
+            android:textSize="11sp" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/btnSpeedMinus"
+            android:layout_width="40dp"
+            android:layout_height="34dp"
+            android:background="@drawable/bg_button_dark"
+            android:gravity="center"
+            android:text="－"
+            android:textColor="#DDFFFFFF"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tvSpeed"
+            android:layout_width="64dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="1.00x"
+            android:textColor="#3CE8A0"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/btnSpeedPlus"
+            android:layout_width="40dp"
+            android:layout_height="34dp"
+            android:background="@drawable/bg_button_dark"
+            android:gravity="center"
+            android:text="＋"
+            android:textColor="#DDFFFFFF"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <!-- 控制行 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="28dp"
+        android:paddingTop="10dp">
+
+        <Button
+            android:id="@+id/btnRestart"
+            android:layout_width="wrap_content"
+            android:layout_height="46dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_button_dark"
+            android:text="重唱"
+            android:textColor="#B3FFFFFF"
+            android:textSize="13sp" />
+
+        <ImageView
+            android:id="@+id/btnPlayPause"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginHorizontal="18dp"
+            android:contentDescription="播放/暂停"
+            android:src="@drawable/ic_pause"
+            app:tint="@android:color/white" />
+
+        <Button
+            android:id="@+id/btnFinish"
+            android:layout_width="wrap_content"
+            android:layout_height="46dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_button_green"
+            android:text="结束"
+            android:textColor="@android:color/white"
+            android:textSize="13sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <!-- 状态行 -->
+    <TextView
+        android:id="@+id/tvStatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingHorizontal="28dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="18dp"
+        android:text="就绪"
+        android:textColor="#99FFFFFF"
+        android:textSize="10sp" />
+</LinearLayout>

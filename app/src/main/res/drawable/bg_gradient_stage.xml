@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 深灰紫 → 蓝调紫黑（回森式舞台渐变） -->
+    <gradient
+        android:angle="315"
+        android:endColor="#0D1122"
+        android:startColor="#2B2438" />
+</shape>
